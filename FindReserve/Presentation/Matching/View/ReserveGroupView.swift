@@ -8,11 +8,30 @@
 import SwiftUI
 
 struct ReserveGroupView: View {
-    var body: some View {
-        Text("Hello, World!")
-    }
+    @StateObject var viewModel: ReserveGroupViewModel
+    @EnvironmentObject var router: MatchingRouter
+
+        var body: some View {
+            VStack(alignment: .leading) {
+                Text("OO 훈련장에서 귀가중")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding(.top, 20)
+                    .padding(.leading, 20)
+
+                Text("총 \(viewModel.reserves.count)명 매칭됨")
+                    .foregroundColor(.gray)
+                    .padding(.leading, 20)
+                
+                List(viewModel.reserves) { reserve in
+                    ReserveCell(reserve: reserve)
+                }
+                
+                CustomButton(text: "결제 요청") {
+                    router.push(.requestPayment)
+                }
+                .padding(.horizontal, 20)
+            }
+        }
 }
 
-#Preview {
-    ReserveGroupView()
-}

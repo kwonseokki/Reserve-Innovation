@@ -11,6 +11,7 @@ import Combine
 enum Route {
     case mathcing
     case reserveGroup
+    case requestPayment
 }
 
 class MatchingRouter: ObservableObject {

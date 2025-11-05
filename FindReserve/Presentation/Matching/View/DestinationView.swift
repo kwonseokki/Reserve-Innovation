@@ -37,7 +37,9 @@ struct DestinationView: View {
                     case .mathcing:
                         FindReserveView()
                     case .reserveGroup:
-                        ReserveGroupView()
+                        ReserveGroupView(viewModel: ReserveGroupViewModel())
+                    case .requestPayment:
+                        RequestPaymentView()                    
                     }
                 }
             }
