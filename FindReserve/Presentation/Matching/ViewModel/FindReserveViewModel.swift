@@ -65,8 +65,11 @@ extension FindReserveViewModel: MCNearbyServiceAdvertiserDelegate {
 extension FindReserveViewModel: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         DispatchQueue.main.async { [weak self] in
-            self?.connectedPeerCount = session.connectedPeers.count + 1
-            self?.connecteComplete = true
+            guard let self = self else { return }
+            connectedPeerCount = session.connectedPeers.count + 1
+            if connectedPeerCount == 4 {
+                connecteComplete = true
+            }
         }
         print(#function)
     }
