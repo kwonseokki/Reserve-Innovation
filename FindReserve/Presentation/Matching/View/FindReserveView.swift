@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FindReserveView: View {
     @ObservedObject var viewModel: FindReserveViewModel
+    @StateObject var connectivityManager = ConnectivityManager.shared
     @EnvironmentObject var router: MatchingRouter
     @Environment(\.dismiss) private var dismiss
     
@@ -20,8 +21,8 @@ struct FindReserveView: View {
                 .font(.title3)
                 .fontWeight(.semibold)
             
-            if viewModel.isConnected {
-                Text("\(viewModel.connectedPeerCount)/4 명이 매칭됨")
+            if connectivityManager.isConnected {
+                Text("\(connectivityManager.connectedPeerCount)/4 명이 매칭됨")
                     .font(.caption)
             }
             
@@ -50,7 +51,7 @@ struct FindReserveView: View {
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
         }
-        .onChange(of: viewModel.connecteComplete) { connecteComplete in
+        .onChange(of: connectivityManager.connecteComplete) { connecteComplete in
             if connecteComplete {
                 router.push(.reserveGroup)
             }

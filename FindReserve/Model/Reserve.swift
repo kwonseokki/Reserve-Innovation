@@ -12,4 +12,4 @@ struct Reserve: Identifiable {
         let name: String
         let phone: String
         let isPayer: Bool
-    }
+}

@@ -1,5 +1,5 @@
 //
-//  FindReserveViewModel.swift
+//  ConnectivityManager.swift
 //  FindReserve
 //
 //  Created by a on 11/10/25.
@@ -8,7 +8,9 @@
 import Combine
 import MultipeerConnectivity
 
-class FindReserveViewModel: NSObject, ObservableObject {
+class ConnectivityManager: NSObject, ObservableObject {
+    static let shared = ConnectivityManager()
+    
     private var session: MCSession!
     private var advertiser: MCNearbyServiceAdvertiser!
     private var browser: MCNearbyServiceBrowser!
@@ -24,7 +26,7 @@ class FindReserveViewModel: NSObject, ObservableObject {
     @Published var connectedPeerCount = 0
     @Published var connecteComplete: Bool = false
     
-    override init() {
+    override private init() {
         super.init()
         self.advertiser = MCNearbyServiceAdvertiser(
             peer: localPeerID,
@@ -66,7 +68,7 @@ class FindReserveViewModel: NSObject, ObservableObject {
     }
 }
 
-extension FindReserveViewModel: MCNearbyServiceAdvertiserDelegate {
+extension ConnectivityManager: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         invitationHandler(true, session)
         print(#function)
@@ -74,7 +76,7 @@ extension FindReserveViewModel: MCNearbyServiceAdvertiserDelegate {
     }
 }
 
-extension FindReserveViewModel: MCSessionDelegate {
+extension ConnectivityManager: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -100,7 +102,7 @@ extension FindReserveViewModel: MCSessionDelegate {
     }
 }
 
-extension FindReserveViewModel: MCNearbyServiceBrowserDelegate {
+extension ConnectivityManager: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         print("peerID \(localPeerID)")
         // 근처에 피어 발견시 초대
