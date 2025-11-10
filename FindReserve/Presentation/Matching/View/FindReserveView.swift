@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FindReserveView: View {
+    @ObservedObject var viewModel: FindReserveViewModel
     @EnvironmentObject var router: MatchingRouter
     @Environment(\.dismiss) private var dismiss
     
@@ -18,6 +19,11 @@ struct FindReserveView: View {
             Text("주변 예비군 탐색 중...")
                 .font(.title3)
                 .fontWeight(.semibold)
+            
+            if viewModel.isConnected {
+                Text("\(viewModel.connectedPeerCount)/4 명이 매칭됨")
+                    .font(.caption)
+            }
             
             ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: .blue))
@@ -43,6 +49,11 @@ struct FindReserveView: View {
             }
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
+        }
+        .onChange(of: viewModel.connecteComplete) { connecteComplete in
+            if connecteComplete {
+                router.push(.reserveGroup)
+            }
         }
     }
 }
