@@ -26,17 +26,21 @@ class ConnectivityManager: NSObject, ObservableObject {
     @Published var connectedPeerCount = 0
     @Published var connecteComplete: Bool = false
     
+    var receivedData: ((String) -> Void)?
+    
     override private init() {
         super.init()
+        configureSession()
+    }
+     
+    // 세션 구성
+    func configureSession() {
         self.advertiser = MCNearbyServiceAdvertiser(
             peer: localPeerID,
             discoveryInfo: nil,
             serviceType: matchServiceType
         )
-        
         advertiser.delegate = self
-        // 근처 피어에게 세션참여 요청
-        advertiser.startAdvertisingPeer()
         
         self.session = MCSession(
             peer: localPeerID,
@@ -48,6 +52,20 @@ class ConnectivityManager: NSObject, ObservableObject {
         
         self.browser = MCNearbyServiceBrowser(peer: localPeerID, serviceType: matchServiceType)
         browser.delegate = self
+    }
+    
+    // 세션 중지
+    func stopSession() {
+        advertiser.stopAdvertisingPeer()
+        browser.stopBrowsingForPeers()
+        timer = nil
+    }
+    
+    // 세션 시작
+    func startSession() {
+        
+        // 근처 피어에게 세션참여 요청
+        advertiser.startAdvertisingPeer()
         // 주변 기기 탐색
         browser.startBrowsingForPeers()
         
@@ -62,9 +80,9 @@ class ConnectivityManager: NSObject, ObservableObject {
             })
     }
     
-    deinit {
-        advertiser.stopAdvertisingPeer()
-        browser.stopBrowsingForPeers()
+    // 데이터 전송
+    func sendData(_ data: Data) throws {
+        try session.send(data, toPeers: session.connectedPeers, with: .reliable)
     }
 }
 
@@ -86,7 +104,13 @@ extension ConnectivityManager: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        print(#function)
+        do {
+            let decoder = JSONDecoder()
+            let data = try decoder.decode(String.self, from: data)
+            receivedData?(data)
+        } catch {
+            
+        }
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

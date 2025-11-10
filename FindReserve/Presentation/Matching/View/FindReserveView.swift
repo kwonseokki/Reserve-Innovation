@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct FindReserveView: View {
-    @ObservedObject var viewModel: FindReserveViewModel
+struct FindReserveView: View {    
     @StateObject var connectivityManager = ConnectivityManager.shared
     @EnvironmentObject var router: MatchingRouter
     @Environment(\.dismiss) private var dismiss
@@ -38,7 +37,8 @@ struct FindReserveView: View {
             Spacer()
             
             Button(action: {
-                router.push(.reserveGroup)
+                connectivityManager.stopSession()
+                router.dismissTrigger = true
             }) {
                 Text("탐색 취소")
                     .fontWeight(.semibold)
@@ -51,9 +51,12 @@ struct FindReserveView: View {
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
         }
+        .onAppear {
+            connectivityManager.startSession()
+        }
         .onChange(of: connectivityManager.connecteComplete) { connecteComplete in
             if connecteComplete {
-                router.push(.reserveGroup)
+                router.push(.reserveGroup)                
             }
         }
     }

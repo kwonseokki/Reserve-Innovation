@@ -66,6 +66,7 @@ struct RequestPaymentView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 50)
         }
+        .navigationBarBackButtonHidden(true)
         .overlay(
             // 계좌복사 완료 토스트
             Group {

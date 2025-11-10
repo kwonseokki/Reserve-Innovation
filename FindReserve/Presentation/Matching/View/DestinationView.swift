@@ -40,7 +40,7 @@ struct DestinationView: View {
             .navigationDestination(for: Route.self) { destination in
                 switch destination {
                 case .mathcing:
-                    FindReserveView(viewModel: FindReserveViewModel())
+                    FindReserveView()
                 case .reserveGroup:
                     ReserveGroupView(viewModel: ReserveGroupViewModel())
                 case .requestPayment:
