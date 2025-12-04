@@ -21,6 +21,12 @@ class ReserveGroupViewModel: ObservableObject {
         connectivityManager.isHost ?? false
     }
     
+    init() {
+        connectivityManager.$connectedUsers
+            .assign(to: \.reserves, on: self)
+            .store(in: &cancellables)
+    }
+    
     func requestPayment() {
         do {
             let data = try JSONEncoder().encode(10000)

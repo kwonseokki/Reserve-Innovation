@@ -27,9 +27,9 @@ class ConnectivityManager: NSObject, ObservableObject {
     var isConnected: Bool {
         session.connectedPeers.count > 0
     }
-        
+    
     @Published var connecteComplete: Bool = false
-    @Published var connectedUsers: [User] = []
+    @Published var connectedUsers: [Reserve] = []
     @Published var connectedPeerIDs: [String] = []
     
     var localInviterID: String {
@@ -126,12 +126,27 @@ extension ConnectivityManager: MCSessionDelegate {
                     stopAdvertising()
                 }
             }
+            
+            if let user = KeyChainManager.getUser() {
+                let userInfo = Reserve(id: localInviterID, name: user.name, phone: user.phoneNumber)
+                if let userData = try? JSONEncoder().encode(userInfo) {
+                    try? sendData(userData)
+                }
+            }
         @unknown default:
             break
         }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        if let user = try? JSONDecoder().decode(Reserve.self, from: data) {
+                 DispatchQueue.main.async { [weak self] in
+                     guard let self = self else { return }
+                     if !connectedUsers.contains(where: { $0.id == user.id }) {
+                         connectedUsers.append(user)
+                     }
+                 }
+             }
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

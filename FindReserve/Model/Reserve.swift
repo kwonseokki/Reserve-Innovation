@@ -8,8 +8,7 @@
 import Foundation
 
 struct Reserve: Identifiable, Codable {
-        let id = UUID()
+        let id: String
         let name: String
         let phone: String
-        let isPayer: Bool
 }
