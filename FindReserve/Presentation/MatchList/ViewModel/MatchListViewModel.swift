@@ -10,17 +10,12 @@ import SwiftData
 import Foundation
 
 class MatchListViewModel: ObservableObject {
-    private let modelContainer: ModelContainer
-    private let modelContext: ModelContext
+    private var modelContext: ModelContext
     
     @Published var rideHistory: [RideHistory] = []
     
-    @MainActor init() {
-        self.modelContainer = try! ModelContainer(
-            for: RideHistory.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: false)
-        )
-        self.modelContext = modelContainer.mainContext
+    @MainActor init(modelContext: ModelContext) {
+        self.modelContext = modelContext
         self.fetchRideHistory()
     }
     

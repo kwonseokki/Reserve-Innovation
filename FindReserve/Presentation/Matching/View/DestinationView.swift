@@ -12,6 +12,7 @@ struct DestinationView: View {
     @StateObject var viewModel = DestinationViewModel()
     @EnvironmentObject var router: Router
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         NavigationStack(path: $router.fullScreenPath) {
@@ -47,9 +48,9 @@ struct DestinationView: View {
                 case .reserveGroup:
                     ReserveGroupView(viewModel: ReserveGroupViewModel())
                 case .requestPayment(let amount):
-                    RequestPaymentView(viewModel: RequestPaymentViewModel(amount: amount))
+                    RequestPaymentView(viewModel: RequestPaymentViewModel(amount: amount, modelContext: modelContext))
                 case .training:
-                    TrainingSelectionView()
+                    TrainingSelectionView(viewModel: TrainingSelectionViewModel(modelContext: modelContext))
                 }
             }
         }

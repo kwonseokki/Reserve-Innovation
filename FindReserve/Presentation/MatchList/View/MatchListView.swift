@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct MatchListView: View {
-    @StateObject var viewModel = MatchListViewModel()
+    @StateObject var viewModel: MatchListViewModel
 
     var body: some View {
-        NavigationStack {
             List(viewModel.rideHistory) { item in
                RideHistoryCell(rideHistory: item)
             }
             .navigationTitle("내 정산 내역")
-        }
+        
     }
 }

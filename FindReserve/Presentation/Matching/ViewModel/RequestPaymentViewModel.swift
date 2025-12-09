@@ -10,8 +10,7 @@ import SwiftData
 import Foundation
 
 class RequestPaymentViewModel: ObservableObject {
-    private let modelContainer: ModelContainer
-    private let modelContext: ModelContext
+    private var modelContext: ModelContext
     
     /// 최종 정산 금액
     private(set) var amount: Int
@@ -22,14 +21,10 @@ class RequestPaymentViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init (amount: Int) {
+    init (amount: Int, modelContext: ModelContext) {
         self.amount = amount
         self.payUserInfo = connectivityManager.hostUser
-        self.modelContainer = try! ModelContainer(
-            for: RideHistory.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: false)
-        )
-        self.modelContext = modelContainer.mainContext
+        self.modelContext = modelContext
     }
     
     func saveRideHistory() {

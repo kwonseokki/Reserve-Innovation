@@ -10,9 +10,16 @@ import SwiftData
 
 @main
 struct FindReserveApp: App {
+    var container = try! ModelContainer(
+        for: TrainingInfo.self,
+        RideHistory.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: false)
+    )
+    
     var body: some Scene {
         WindowGroup {
             RootView()
+                .modelContext(container.mainContext)
         }
     }
 }

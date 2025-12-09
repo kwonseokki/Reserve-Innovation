@@ -11,6 +11,7 @@ struct MatchingView: View {
     @State var isPresented: Bool = false
     @StateObject var router = Router()
     @StateObject var viewModel = MatchingViewModel()
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -114,9 +115,9 @@ struct MatchingView: View {
                 case .reserveGroup:
                     ReserveGroupView(viewModel: ReserveGroupViewModel())
                 case .requestPayment(let amount):
-                    RequestPaymentView(viewModel: RequestPaymentViewModel(amount: amount))
+                    RequestPaymentView(viewModel: RequestPaymentViewModel(amount: amount, modelContext: modelContext))
                 case .training:
-                    TrainingSelectionView()
+                    TrainingSelectionView(viewModel: TrainingSelectionViewModel(modelContext: modelContext))
                 }
             }
             .onAppear(perform: {
