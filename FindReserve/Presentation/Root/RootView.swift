@@ -13,7 +13,7 @@ struct RootView: View {
     var body: some View {
         NavigationStack {
             TabView {
-                MatchingView()
+                MatchingView(viewModel: MatchingViewModel(modelContext: modelContext))
                     .tabItem {
                         Image(systemName: "person.line.dotted.person")
                         Text("매칭")

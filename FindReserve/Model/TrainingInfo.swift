@@ -29,24 +29,24 @@ class TrainingInfo {
 
 enum TrainingType: String, CaseIterable {
     // MARK: - 동원훈련
-    case mobilization1 = "동원훈련 1차"
-    case mobilization2 = "동원훈련 2차"
-    case mobilization3 = "동원훈련 3차"
+    case mobilization1 = "동원훈련(1차)"
+    case mobilization2 = "동원훈련(2차)"
+    case mobilization3 = "동원훈련(3차)"
     
     // MARK: - 동원미참(동원Ⅱ형)
-    case mobilizationExempt1 = "동원미참훈련 1차"
-    case mobilizationExempt2 = "동원미참훈련 2차"
-    case mobilizationExempt3 = "동원미참훈련 3차"
+    case mobilizationExempt1 = "동원미참훈련(1차)"
+    case mobilizationExempt2 = "동원미참훈련(2차)"
+    case mobilizationExempt3 = "동원미참훈련(3차)"
     
     // MARK: - 기본훈련
-    case basic1 = "기본훈련 1차"
-    case basic2 = "기본훈련 2차"
-    case basic3 = "기본훈련 3차"
+    case basic1 = "기본훈련(1차)"
+    case basic2 = "기본훈련(2차)"
+    case basic3 = "기본훈련(3차)"
     
     // MARK: - 작계훈련
-    case operation1 = "작계훈련 1차"
-    case operation2 = "작계훈련 2차"
-    case operation3 = "작계훈련 3차"
+    case operation1 = "작계훈련(1차)"
+    case operation2 = "작계훈련(2차)"
+    case operation3 = "작계훈련(3차)"
     
     // MARK: - 기타 선택형
     case national = "전국단위훈련"

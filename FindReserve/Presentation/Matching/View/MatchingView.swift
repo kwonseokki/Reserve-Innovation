@@ -10,7 +10,7 @@ import SwiftUI
 struct MatchingView: View {
     @State var isPresented: Bool = false
     @StateObject var router = Router()
-    @StateObject var viewModel = MatchingViewModel()
+    @StateObject var viewModel: MatchingViewModel
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
@@ -37,13 +37,17 @@ struct MatchingView: View {
                     } label: {
                         Text("훈련 추가")
                     }
-                    
-                    Label("기본훈련 (2차)", systemImage: "list.bullet.clipboard")
-                        .font(.headline)
-                    Label("2025.11.05(6h)", systemImage: "clock")
-                        .font(.subheadline)
-                    Label("위치: 용인시 운학 과학화 훈련장", systemImage: "mappin.circle")
-                        .font(.subheadline)
+                                      
+                    if let myTrainingInfo = viewModel.myTrainingInfo {
+                        Label(myTrainingInfo.trainingTypeValue, systemImage: "list.bullet.clipboard")
+                            .font(.headline)
+                        Label("\(myTrainingInfo.startDate)", systemImage: "clock")
+                            .font(.subheadline)
+                        Label(myTrainingInfo.departure, systemImage: "mappin.circle")
+                            .font(.subheadline)
+                    } else {
+                        Text("훈련정보가 존재하지 않습니다.")
+                    }
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
@@ -129,10 +133,9 @@ struct MatchingView: View {
                 DestinationView()
             }
         }
+        .onAppear {
+            viewModel.fetchTrainingInfo()
+        }
         .environmentObject(router)
     }
-}
-
-#Preview {
-    MatchingView()
 }
