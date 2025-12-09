@@ -130,7 +130,7 @@ struct MatchingView: View {
             .padding(.horizontal, 20)
             
             .fullScreenCover(item: $router.fullScreenCover) { destination in
-                DestinationView()
+                DestinationView(viewModel: DestinationViewModel(modelContext: modelContext))
             }
         }
         .onAppear {

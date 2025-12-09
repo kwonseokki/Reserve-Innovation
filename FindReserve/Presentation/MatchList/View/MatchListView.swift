@@ -14,7 +14,9 @@ struct MatchListView: View {
             List(viewModel.rideHistory) { item in
                RideHistoryCell(rideHistory: item)
             }
-            .navigationTitle("내 정산 내역")
+            .onAppear {
+                viewModel.fetchRideHistory()
+            }            
         
     }
 }

@@ -18,12 +18,14 @@ class TrainingInfo {
     }
     var startDate: Date
     var departure: String
+    var destination: String
     
-    init(id: UUID, trainingTypeValue: String, startDate: Date, departure: String) {
+    init(id: UUID, trainingTypeValue: String, startDate: Date, departure: String, destination: String) {
         self.id = id
         self.trainingTypeValue = trainingTypeValue
         self.startDate = startDate
         self.departure = departure
+        self.destination = destination
     }
 }
 

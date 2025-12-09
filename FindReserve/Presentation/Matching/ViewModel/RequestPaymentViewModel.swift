@@ -27,15 +27,27 @@ class RequestPaymentViewModel: ObservableObject {
         self.modelContext = modelContext
     }
     
+    func fetchMyTrainingInfo() -> TrainingInfo? {
+        do {
+            let trainingList = try modelContext.fetch(FetchDescriptor<TrainingInfo>())
+            return trainingList.first
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
     func saveRideHistory() {
         // 이용내역 저장
-        let rideHistory = RideHistory(
-            departure: "출발지",
-            destination: "도착지",
-            isPaymentCompleted: true,
-            payUserInfo: payUserInfo
-        )
-        modelContext.insert(rideHistory)
+        if let myTraningInfo = fetchMyTrainingInfo() {
+            let rideHistory = RideHistory(
+                departure: myTraningInfo.departure,
+                destination: myTraningInfo.destination,
+                isPaymentCompleted: true,
+                payUserInfo: payUserInfo
+            )
+            modelContext.insert(rideHistory)
+        }
         do {
             try modelContext.save()
         } catch {

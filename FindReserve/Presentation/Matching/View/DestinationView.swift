@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct DestinationView: View {
-    @StateObject var viewModel = DestinationViewModel()
+    @StateObject var viewModel: DestinationViewModel
     @EnvironmentObject var router: Router
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -64,6 +64,7 @@ extension DestinationView {
                 ForEach(viewModel.searchTextResult, id: \.fclt_id) { result in
                     Button {
                         viewModel.selectLocation(.init(latitude: result.lat, longitude: result.lot))
+                        viewModel.updateDestination(result.fclt_nm)
                     } label: {
                         HStack {
                             VStack(alignment: .leading) {
@@ -83,6 +84,3 @@ extension DestinationView {
     }
 }
 
-#Preview {
-    DestinationView()
-}

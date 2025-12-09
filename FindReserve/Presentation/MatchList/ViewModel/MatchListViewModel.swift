@@ -15,8 +15,7 @@ class MatchListViewModel: ObservableObject {
     @Published var rideHistory: [RideHistory] = []
     
     @MainActor init(modelContext: ModelContext) {
-        self.modelContext = modelContext
-        self.fetchRideHistory()
+        self.modelContext = modelContext        
     }
     
     func fetchRideHistory() {

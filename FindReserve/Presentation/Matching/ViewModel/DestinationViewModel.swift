@@ -8,6 +8,7 @@
 import Combine
 import SwiftUI
 import MapKit
+import SwiftData
 
 class DestinationViewModel: ObservableObject {
     @Published var currentLocation = CLLocationCoordinate2D(latitude: 37.5661456404755, longitude: 126.9924672359717)
@@ -16,8 +17,10 @@ class DestinationViewModel: ObservableObject {
     @Published var isShowSearchBar: Bool = false
     
     private var searchResult: [Location] = []
+    private var modelContext: ModelContext
     
-    init() {
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
         fetchData()
     }
     
@@ -42,5 +45,17 @@ class DestinationViewModel: ObservableObject {
     func selectLocation(_ location: CLLocationCoordinate2D) {
         currentLocation = location
         isShowSearchBar = false
+    }
+    
+    func updateDestination(_ destination: String) {
+        do {
+            let trainingList = try modelContext.fetch(FetchDescriptor<TrainingInfo>())
+            if let myTrainingInfo = trainingList.first {
+                myTrainingInfo.destination = destination
+            }
+            try modelContext.save()
+        } catch {
+            
+        }
     }
 }

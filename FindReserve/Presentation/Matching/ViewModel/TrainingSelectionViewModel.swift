@@ -30,6 +30,18 @@ class TrainingSelectionViewModel: ObservableObject {
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        fetchTrainingCenterInfo()
+    }
+    
+    func fetchTrainingCenterInfo() {
+        guard let path = Bundle.main.path(forResource: "kr-reserve-training-centers", ofType: "json") else { return }
+        do {
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
+            let decodedData = try JSONDecoder().decode(TrainingCenterResponse.self, from: data)
+            self.trainingCenters = decodedData.data.map { $0.trngcmp }
+        } catch {
+            print("ERROR: \(error.localizedDescription)")
+        }
     }
     
     func fetchTrainingInfo() {
@@ -58,7 +70,8 @@ class TrainingSelectionViewModel: ObservableObject {
                     id: trainingInfoID ?? UUID(),
                     trainingTypeValue: selectedTrainingType,
                     startDate: startDate,
-                    departure: selectedTrainingCenter
+                    departure: selectedTrainingCenter,
+                    destination: ""
                 )
                 modelContext.insert(trainingInfo)
             }
