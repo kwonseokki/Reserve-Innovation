@@ -16,6 +16,7 @@ class RideHistory: Identifiable {
     var isPaymentCompleted: Bool     // 결제 완료 여부
     var createdAt: Date              // 생성일
     var payUserInfo: Reserve?
+    var amount: Int
     
     // 필요하면 편의 초기화
     init(
@@ -23,12 +24,14 @@ class RideHistory: Identifiable {
         destination: String,
         isPaymentCompleted: Bool,
         createdAt: Date = Date(),
-        payUserInfo: Reserve? = nil
+        payUserInfo: Reserve? = nil,
+        amount: Int = 0
     ) {
         self.departure = departure
         self.destination = destination
         self.isPaymentCompleted = isPaymentCompleted
         self.createdAt = createdAt
         self.payUserInfo = payUserInfo
+        self.amount = amount
     }
 }

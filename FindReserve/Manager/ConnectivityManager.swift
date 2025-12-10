@@ -35,7 +35,7 @@ class ConnectivityManager: NSObject, ObservableObject {
     /// 랜덤으로 부여되는 기기 고유 ID
     var localInviterID: String { localPeerID.displayName }
     /// 호스트 여부
-    var isHost: Bool? { localInviterID == connectedPeerIDs.max() }
+    var isHost: Bool { localInviterID == connectedPeerIDs.max() }
     /// 호스트 유저 정보
     var hostUser: Reserve? { connectedUsers.first(where: { $0.id == connectedPeerIDs.max() }) }
     /// 연결된 디바이스 개수

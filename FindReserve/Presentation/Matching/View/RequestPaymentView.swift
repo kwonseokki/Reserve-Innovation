@@ -15,50 +15,70 @@ struct RequestPaymentView: View {
     @State private var isShowCopyAccountToast = false
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 0) {
             Spacer()
+            if viewModel.isHost {
+                Image(.checkIcon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 150)
+            } else {
+                Image(.card)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+            }
             
-            VStack(spacing: 8) {
-                Text("정산 요청")
+            
+            Text(viewModel.isHost ? "정산 요청을 완료했어요!" : "정산 요청이 도착했어요!")
                     .font(.title)
                     .fontWeight(.bold)
-                Text("아래 정보를 확인하고 정산을 진행해주세요")
+                    .padding(.top, 16)
+            
+                Text("\(viewModel.payUserInfo?.name ?? "예비군")님이 정산을 요청했습니다.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-            }
+                    .padding(.top, 8)
             
             // 금액
             Text("\(viewModel.amount)원")
                 .font(.system(size: 40, weight: .bold))
                 .foregroundColor(.blue)
+                .padding(.top, 16)
             
             // 결제자 정보
-            VStack(spacing: 12) {
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        if let payUserInfo = viewModel.payUserInfo {
-                            Text("결제자: \(payUserInfo.name)")
-                            Text("핸드폰 번호: \(payUserInfo.phone)")
-                            Text("계좌번호: \(payUserInfo.account)")
+            if viewModel.isHost {
+                
+            } else {
+                CardContainerView {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            if let payUserInfo = viewModel.payUserInfo {
+                                Text("결제자: \(payUserInfo.name)")
+                                    .fontWeight(.semibold)
+                                Text("핸드폰 번호: \(payUserInfo.phone)")
+                                    .fontWeight(.semibold)
+                                Text("계좌번호: \(payUserInfo.account)")
+                                    .fontWeight(.semibold)
+                            }
                         }
-                    }
-                    Spacer()
-                    Button(action: {
-                        UIPasteboard.general.string = viewModel.payUserInfo?.account
-                        isShowCopyAccountToast = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            isShowCopyAccountToast = false
+                        Spacer()
+                        Button(action: {
+                            UIPasteboard.general.string = viewModel.payUserInfo?.account
+                            isShowCopyAccountToast = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                isShowCopyAccountToast = false
+                            }
+                        }) {
+                            Image(systemName: "doc.on.doc")
+                                .foregroundColor(.blue)
                         }
-                    }) {
-                        Image(systemName: "doc.on.doc")
-                            .foregroundColor(.blue)
                     }
                 }
-                .padding()
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(12)
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
             }
-            .padding(.horizontal, 20)
+            
             
             Spacer()
             
@@ -67,9 +87,10 @@ struct RequestPaymentView: View {
                 router.dismissTrigger = true
             }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 50)
+                .padding(.bottom, 20)
         }
         .navigationBarBackButtonHidden(true)
+        .background(.customBackground)
         .overlay(
             // 계좌복사 완료 토스트
             Group {

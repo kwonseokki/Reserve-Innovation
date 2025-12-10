@@ -23,6 +23,8 @@ final class RequestPaymentViewModel: ObservableObject {
     /// 결제정보 임시 저장용
     private var rideHistory: RideHistory?
     
+    var isHost: Bool { connectivityManager.isHost }
+    
     init (amount: Int, modelContext: ModelContext) {
         self.amount = amount
         self.payUserInfo = connectivityManager.hostUser
@@ -48,7 +50,8 @@ final class RequestPaymentViewModel: ObservableObject {
                 departure: myTraningInfo.departure,
                 destination: myTraningInfo.destination,
                 isPaymentCompleted: false,
-                payUserInfo: payUserInfo
+                payUserInfo: payUserInfo,
+                amount: amount
             )
             if let rideHistory {
                 modelContext.insert(rideHistory)
