@@ -15,109 +15,125 @@ struct MatchingView: View {
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            VStack(alignment: .leading) {
-                Text("\(viewModel.userName) 예비군님 안녕하세요")
+            VStack(alignment: .leading, spacing: 16) {
+                Text("안녕하세요!")
+                    .foregroundStyle(.gray)
+                    .padding(.top, 20)
+                Text("\(viewModel.userName) 예비군님")
                     .font(.title)
                     .fontWeight(.bold)
-                    .padding(.top, 20)
                 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("다가오는 훈련 정보")
-                        .font(.title2)
-                        .bold()
-                    Text("다가오는 훈련 정보를 놓치지 말고 확인하세요")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                // 나의 정보
+                CardContainerView {
+                    VStack(spacing: 20) {
+                        HStack {
+                            Label {
+                                Text("나의 정보")
+                                    .fontWeight(.semibold)
+                            } icon: {
+                               Text("🪖")
+                            }
+                            
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text("핸드폰")
+                                .foregroundStyle(.gray)
+                            Spacer()
+                            Text("010-1234-1234")
+                        }
+                        
+                        HStack {
+                            Text("계좌")
+                                .foregroundStyle(.gray)
+                            Spacer()
+                            Text("3333-12-1234567")
+                        }
+                    }
+                }
+                
+                // 훈련 정보
+                CardContainerView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        HStack {
+                            Label {
+                                Text("다가오는 훈련")
+                                    .fontWeight(.semibold)
+                            } icon: {
+                                Text("📋")
+                            }
+                            
+                            Spacer()
+                        }
+                        
+                        if let myTrainingInfo = viewModel.myTrainingInfo {
+                            HStack(spacing: 8) {
+                                Image(.marker)
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundStyle(.main)
+                                VStack(alignment: .leading) {
+                                    Text("훈련장소")
+                                        .font(.caption)
+                                        .foregroundStyle(.gray)
+                                    Text(myTrainingInfo.departure)
+                                }
+                            }
+                            HStack(spacing: 8) {
+                                Image(.marker)
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundStyle(.main)
+                                VStack(alignment: .leading) {
+                                    Text("훈련 일정")
+                                        .font(.caption)
+                                        .foregroundStyle(.gray)
+                                    Text("\(myTrainingInfo.startDate)")
+                                }
+                            }
+                            
+                            Text(myTrainingInfo.trainingTypeValue)
+                                .font(.caption)
+                                .fontWeight(.semibold)
+                                .padding(8)
+                                .background(.main)
+                                .cornerRadius(8)
+                        } else {
+                            Text("훈련정보를 등록해주세요")
+                        }
+                    }
+                }
+                .onTapGesture {
+                    router.push(.training)
+                }
+                
+                // 매칭 시작하기
+                CustomButton(text: "동승 매칭 시작하기", icon: Image(.car)) {
+                    router.presentFullScreen(.mathcing)
                 }
                 .padding(.top, 10)
                 
-                VStack(alignment: .leading, spacing: 8) {
-                    Button {
-                        router.push(.training)
-                    } label: {
-                        Text("훈련 추가")
-                    }
-                                      
-                    if let myTrainingInfo = viewModel.myTrainingInfo {
-                        Label(myTrainingInfo.trainingTypeValue, systemImage: "list.bullet.clipboard")
-                            .font(.headline)
-                        Label("\(myTrainingInfo.startDate)", systemImage: "clock")
-                            .font(.subheadline)
-                        Label(myTrainingInfo.departure, systemImage: "mappin.circle")
-                            .font(.subheadline)
-                    } else {
-                        Text("훈련정보가 존재하지 않습니다.")
-                    }
+                Label {
+                    Text("버튼을 누르면 목적지에 맞게 귀가 매칭이 시작됩니다.\n근처의 예비군과 함께 편하게 귀가하세요.")
+                        .font(.caption)
+                } icon: {
+                    Text("💡")
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(.gray.opacity(0.1))
                 .cornerRadius(12)
-                .padding(.top, 15)
-                
-                VStack(alignment: .leading, spacing: 24) {
-                    HStack {
-                        Image(systemName: "person.text.rectangle")
-                            .font(.largeTitle)
-                            .foregroundColor(.blue)
-                        VStack(alignment: .leading) {
-                            Text("훈련 종료까지 20분 남았습니다")
-                                .font(.headline)
-                            Text("근처 예비군님들과 함께 귀가하세요!")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .padding(.top, 10)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("귀가 매칭")
-                            .font(.title2)
-                            .bold()
-                        Text("근처 예비군님들과 함께 안전하게 귀가하세요 🚕")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.top, 10)
-                    
-                    VStack(alignment: .leading) {
-                        Text("현재 주변에 예비군이 3명 있습니다.")
-                            .font(.subheadline)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {
-                                ForEach(0..<3) { _ in
-                                    VStack {
-                                        Image(systemName: "person.crop.circle.fill")
-                                            .resizable()
-                                            .frame(width: 50, height: 50)
-                                            .foregroundColor(.gray)
-                                        Text("OOO 예비군님")
-                                            .font(.caption)
-                                    }
-                                    .padding(8)
-                                    .background(.gray.opacity(0.1))
-                                    .cornerRadius(12)
-                                }
-                            }
-                        }
-                    }
-                    VStack {
-                        CustomButton(text: "매칭 시작하기") {
-                            router.presentFullScreen(.mathcing)
-                        }
-                        Text("버튼을 누르면 목적지에 맞게 귀가 매칭이 시작됩니다.")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                }
                 Spacer()
             }
-       
-            .onAppear(perform: {5
+            
+            .onAppear(perform: {
                 viewModel.getUserInfo()
             })
             .padding(.horizontal, 20)
-            
+            .background(.customBackground)
             .fullScreenCover(item: $router.fullScreenCover) { destination in
                 DestinationView(viewModel: DestinationViewModel(modelContext: modelContext))
             }
