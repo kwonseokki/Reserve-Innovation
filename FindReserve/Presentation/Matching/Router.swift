@@ -15,7 +15,8 @@ enum Route: Hashable, Identifiable {
     case mathcing
     case reserveGroup
     case requestPayment(amount: Int)
-    case training    
+    case training
+    case rideDetail
 }
 
 class Router: ObservableObject {

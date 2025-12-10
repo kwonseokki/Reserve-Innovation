@@ -9,14 +9,16 @@ import SwiftUI
 
 struct MatchListView: View {
     @StateObject var viewModel: MatchListViewModel
-
+    @EnvironmentObject var router: Router
+    
     var body: some View {
+        NavigationStack(path: $router.path) {
             List(viewModel.rideHistory) { item in
-               RideHistoryCell(rideHistory: item)
+                RideHistoryCell(rideHistory: item)
             }
             .onAppear {
                 viewModel.fetchRideHistory()
-            }            
-        
+            }
+        }
     }
 }

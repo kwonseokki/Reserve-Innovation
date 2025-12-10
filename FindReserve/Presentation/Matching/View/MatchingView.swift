@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MatchingView: View {
     @State var isPresented: Bool = false
-    @StateObject var router = Router()
+    @EnvironmentObject var router: Router
     @StateObject var viewModel: MatchingViewModel
     @Environment(\.modelContext) private var modelContext
     
@@ -112,18 +112,7 @@ struct MatchingView: View {
                 }
                 Spacer()
             }
-            .navigationDestination(for: Route.self) { destination in
-                switch destination {
-                case .mathcing:
-                    FindReserveView()
-                case .reserveGroup:
-                    ReserveGroupView(viewModel: ReserveGroupViewModel(modelContext: modelContext))
-                case .requestPayment(let amount):
-                    RequestPaymentView(viewModel: RequestPaymentViewModel(amount: amount, modelContext: modelContext))
-                case .training:
-                    TrainingSelectionView(viewModel: TrainingSelectionViewModel(modelContext: modelContext))
-                }
-            }
+       
             .onAppear(perform: {5
                 viewModel.getUserInfo()
             })
@@ -135,7 +124,6 @@ struct MatchingView: View {
         }
         .onAppear {
             viewModel.fetchTrainingInfo()
-        }
-        .environmentObject(router)
+        }        
     }
 }
