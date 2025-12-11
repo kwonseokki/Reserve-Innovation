@@ -27,7 +27,7 @@ struct CustomButton: View {
                 }
             })
             .fontWeight(.semibold)
-            .frame(maxWidth: .infinity, maxHeight: 60)
+            .frame(maxWidth: .infinity, minHeight: 60)
             .background(.main)
             .foregroundColor(.black)
             .fontWeight(.semibold)
