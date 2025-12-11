@@ -29,7 +29,7 @@ struct TrainingSelectionView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("날짜")
                             .font(.headline)
-
+                        
                         DatePicker("", selection: $viewModel.startDate, displayedComponents: .date)
                             .datePickerStyle(.graphical)
                             .frame(maxWidth: .infinity)
@@ -57,6 +57,11 @@ struct TrainingSelectionView: View {
                 dismiss()
             }
         }
+        .navigationBarBackButtonHidden()
+        .navigationBarItems(leading: BackButton(action: {
+            dismiss()
+        }))
+        .navigationTitle("나의 훈련정보")
         .padding(.horizontal, 16)
         .onAppear {
             viewModel.fetchTrainingInfo()

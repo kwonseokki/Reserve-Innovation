@@ -11,6 +11,19 @@ struct RootView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var router: FirstTabRouter
     
+    init() {
+        let appearance = UITabBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.systemBackground
+                appearance.stackedLayoutAppearance.selected.iconColor = .text
+                appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.text]
+                appearance.stackedLayoutAppearance.normal.iconColor = .lightGray
+                appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.lightGray]
+
+                UITabBar.appearance().standardAppearance = appearance
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
     var body: some View {
         TabView {
             MatchingView(viewModel: MatchingViewModel(modelContext: modelContext))
@@ -31,6 +44,7 @@ struct RootView: View {
                     Text("설정")
                 }
         }
+        .accentColor(.text)
     }
 }
 
