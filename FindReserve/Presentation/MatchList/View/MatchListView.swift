@@ -25,21 +25,40 @@ struct MatchListView: View {
                 }
                 .padding()
                 
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        ForEach(viewModel.rideHistory, id:\.self.id) { item in
-                            CardContainerView {
-                                Button {
-                                    router.push(.rideDetail(id: item.id))
-                                } label: {
-                                    RideHistoryCell(rideHistory: item)
+                if viewModel.rideHistory.isEmpty {
+                    VStack(spacing: 16) {
+                        Spacer()
+                        Image(systemName: "text.page.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
+                            .foregroundStyle(.gray)
+                        
+                        Text("조회할 정산 내역이 없습니다.")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.gray)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(viewModel.rideHistory, id:\.self.id) { item in
+                                CardContainerView {
+                                    Button {
+                                        router.push(.rideDetail(id: item.id))
+                                    } label: {
+                                        RideHistoryCell(rideHistory: item)
+                                    }
+                                    .accentColor(.black)
                                 }
-                                .accentColor(.black)
                             }
                         }
+                        .padding()
                     }
-                    .padding()
                 }
+                
             }
             .onAppear {
                 viewModel.fetchRideHistory()
