@@ -12,9 +12,8 @@ struct RideHistoryCell: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                //            Text("\(rideHistory.createdAt)")
-                Label("12월 15일 (월)", systemImage: "calendar.circle.fill")
+            HStack {                
+                Label(rideHistory.createdAt.toMMDD(), systemImage: "calendar.circle.fill")
                     .font(.system(size: 14))
                     .foregroundStyle(.gray)
                     
