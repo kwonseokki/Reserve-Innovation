@@ -16,7 +16,7 @@ struct BackButton: View {
             action()
         } label: {
             HStack {
-                Image(systemName: "arrow.backward")
+                Image(systemName: "chevron.left")            
                     .foregroundStyle(.black)
                     .fontWeight(.semibold)
                 Text(description ?? "")
